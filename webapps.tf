@@ -28,7 +28,7 @@ resource "azurerm_app_service_plan" "free" {
     count               = 1
 }
 
-resource "azurerm_app_service" "citadel" {
+resource "azurerm_app_service" "duggee_app" {
     name                = "webapp-${random_string.webapprnd.result}-${var.webapplocs[count.index]}"
     location            = var.webapplocs[count.index]
     resource_group_name = azurerm_resource_group.webapps.name
@@ -53,7 +53,8 @@ resource "azurerm_app_service" "citadel" {
     }
 } */
 
-output "webapp_ids" {
-  description = "ids of the webapps provisoned."
-  value       = azurerm_app_service.citadel.*.default_site_hostname
+output "webapp_urls" {
+  description = "url of the duggee webapps provisoned as a list - we only expect one."
+  value       = azurerm_app_service.duggee_app.*.default_site_hostname
+  depends_on  = [duggee_app]
 }
